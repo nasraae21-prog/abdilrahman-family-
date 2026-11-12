@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>شجرة العائلة</title>
+<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@400;700&display=swap" rel="stylesheet">
+<style id="st">
+:root{--bg:#f6e9c6;--tt:#5a3a1a;--paper:#fcf3d9;--ink:#5a3a1a;--mute:#9a7a52;--wood:#b07d45;--gold:#e8cf94;--acc:#ff6b81;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#26324a;--tt:#f6e9c6}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--tt);font-family:"Handjet","Segoe UI",Tahoma,"Noto Naskh Arabic",system-ui,sans-serif;font-size:20px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px 4px}
+h1{font-size:1.7rem;margin:0}
+#chip{background:var(--paper);color:var(--ink);border:3px solid var(--wood);border-radius:12px;padding:0 12px;font-size:1.05rem;max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button{font:inherit;font-size:1.05rem;font-weight:700;padding:5px 14px;border:3px solid var(--wood);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 3px 0 var(--wood);cursor:pointer}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wood)}
+button.p{background:#7cc65e;color:#fff;border-color:#4a9a3a;box-shadow:0 3px 0 #4a9a3a}
+button.d{color:#c0392b}
+.tabs{display:flex;gap:10px;padding:4px 14px 10px}.tabs button{flex:1}.tabs button.on{background:var(--gold)}
+.bar{position:fixed;z-index:20;left:10px;right:10px;bottom:calc(112px + env(safe-area-inset-bottom,0px));background:var(--paper);color:var(--ink);border:3px solid var(--wood);border-radius:20px;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-height:50vh;overflow:auto;box-shadow:0 8px 24px #0004}
+.bar[hidden]{display:none}
+.bar .who{width:100%;color:var(--mute)}
+.bar input{flex:1 1 140px;min-width:0;padding:6px 12px;border:3px solid var(--wood);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:1.1rem}
+.pal{width:100%;display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--mute)}
+.pal i{width:28px;height:28px;border:3px solid var(--wood);border-radius:8px;cursor:pointer;display:inline-block}
+.dock{position:fixed;z-index:15;left:50%;transform:translateX(-50%);bottom:calc(36px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;background:var(--paper);border:3px solid var(--wood);border-radius:22px;padding:8px 10px;box-shadow:0 8px 24px #0004}
+.dock button{width:46px;height:42px;padding:0;font-size:1.5rem;line-height:1}
+#edt{background:#7cc65e;color:#fff;border-color:#4a9a3a;box-shadow:0 3px 0 #4a9a3a}
+.view{flex:1;position:relative;overflow:hidden;touch-action:none;cursor:grab;min-height:0;background:linear-gradient(#bfe6f7,#e4f3f3 50%,var(--bg) 72%)}
+.fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.cl{position:absolute;left:-120px;width:8px;height:8px;box-shadow:16px 0 #fff,24px 0 #fff,8px 8px #fff,16px 8px #fff,24px 8px #fff,32px 8px #fff,40px 8px #fff,0 16px #f1f8fc,8px 16px #fff,16px 16px #fff,24px 16px #fff,32px 16px #fff,40px 16px #fff,48px 16px #f1f8fc;animation:cl 70s linear infinite}
+.cl:nth-child(1){top:4%;transform:scale(1.6)}.cl:nth-child(2){top:14%;animation-delay:-30s;animation-duration:90s}.cl:nth-child(3){top:26%;animation-delay:-55s;transform:scale(1.2)}
+#stage{position:absolute;left:0;top:0;width:max-content;padding:34px 24px;transform-origin:0 0;direction:ltr}
+#stage ul{display:flex;justify-content:center;padding:62px 0 0;margin:0;list-style:none;position:relative}
+#stage>ul{padding-top:0}
+#stage li{padding:0 8px;text-align:center;position:relative}
+.cn{position:absolute;left:-6%;top:-6%;width:112%;height:116%;background-size:100% 100%;image-rendering:pixelated;pointer-events:none}
+.tk{position:absolute;left:50%;top:100%;margin:-30px 0 0 -60px;width:120px;height:150px;pointer-events:none;clip-path:polygon(22% 0,78% 0,82% 60%,100% 100%,0 100%,18% 60%);background:repeating-linear-gradient(90deg,#6d4524 0 10px,#8d5d30 10px 30px,#a8713b 30px 50px,#8d5d30 50px 70px,#6d4524 70px 90px,#8d5d30 90px 120px)}
+.card{direction:rtl;position:relative;z-index:1;display:inline-flex;flex-direction:column;align-items:center;gap:3px;background:color-mix(in srgb,var(--c,#fcf3d9) 20%,var(--paper));border:3px solid var(--wood);border-radius:10px;padding:6px 14px;min-width:92px;cursor:pointer;user-select:none;-webkit-user-select:none;font-size:20px;color:var(--ink);box-shadow:inset 0 0 0 2px var(--gold),0 4px 0 rgba(90,55,20,.35),0 8px 14px rgba(0,0,0,.12)}
+.card.root{font-size:24px}
+.card.sel{outline:3px solid var(--acc);outline-offset:3px}
+.card.dead{filter:grayscale(1);opacity:.85}
+.card b{font-weight:700;font-size:1.1em}
+.card b::after{content:"";display:block;height:4px;margin-top:2px;background:var(--c,var(--gold));border-radius:2px}
+.sp{font-size:.85em;display:flex;align-items:center;gap:4px}
+.heart{display:inline-flex;line-height:0;animation:beat 1.2s ease-in-out infinite}
+.more{position:absolute;top:-12px;left:-10px;background:var(--acc);color:#fff;font-size:15px;padding:0 8px;border-radius:10px}
+.anim .card{animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+.hint{text-align:center;color:var(--tt);font-size:1rem;padding:6px 10px}
+#stage{will-change:transform}
+.lvnew .card.nw{animation:pop .45s cubic-bezier(.34,1.56,.64,1) both;animation-delay:0s!important}
+.cp{position:relative;display:inline-flex;align-items:center;direction:ltr}
+.hr{position:relative;width:42px;height:34px;display:flex;align-items:center;justify-content:center}
+.hr::before{content:"";position:absolute;left:-3px;right:-3px;top:50%;height:5px;margin-top:-2px;background:#9a6a3a}
+.hr .heart{position:relative;z-index:1;filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
+.card.spc{background:color-mix(in srgb,var(--acc) 10%,var(--paper))}
+.cn{filter:drop-shadow(0 8px 0 rgba(20,60,20,.25))}
+.tk{width:170px;height:170px;margin:-30px 0 0 -85px;clip-path:polygon(30% 0,70% 0,74% 55%,100% 100%,0 100%,26% 55%)}
+.cl:nth-child(1){animation-delay:-20s}.cl:nth-child(4){top:8%;animation-delay:-10s;animation-duration:100s}.cl:nth-child(5){top:20%;animation-delay:-40s;animation-duration:110s;transform:scale(.9)}.cl:nth-child(6){top:34%;animation-delay:-70s;animation-duration:80s;transform:scale(1.4)}
+.bd{position:absolute;left:-60px;width:4px;height:4px;background:#4a3a2a;box-shadow:4px 4px 0 #4a3a2a,8px 8px 0 #4a3a2a,12px 4px 0 #4a3a2a,16px 0 0 #4a3a2a;animation:bdf 18s linear infinite,flap .55s ease-in-out infinite}
+.bd:nth-child(7){top:10%;animation-duration:17s,.55s;animation-delay:-2s,0s}.bd:nth-child(8){top:18%;animation-duration:22s,.65s;animation-delay:-9s,-.2s;transform:scale(.8)}.bd:nth-child(9){top:30%;animation-duration:26s,.5s;animation-delay:-15s,-.1s;transform:scale(1.2)}.bd:nth-child(10){top:22%;animation-duration:19s,.6s;animation-delay:-6s,-.3s}.bd:nth-child(11){top:36%;animation-duration:30s,.7s;animation-delay:-20s,0s;transform:scale(.9)}
+@keyframes bdf{to{left:110%}}
+@keyframes flap{50%{box-shadow:4px -4px 0 #4a3a2a,8px -8px 0 #4a3a2a,12px -4px 0 #4a3a2a,16px 0 0 #4a3a2a}}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes beat{50%{transform:scale(1.25)}}
+@keyframes grow{to{stroke-dashoffset:0}}
+@keyframes cl{to{left:110%}}
+@media (prefers-reduced-motion:reduce){.fx{display:none}.heart{animation:none}}
+</style>
+</head>
+<body>
+<template id="bt"><div class="top"><h1>🌳 شجرة العائلة</h1><div id="chip"></div></div>
+<div class="tabs"><button id="tp" class="on">طرف أبي 🌿</button><button id="tm">طرف أمي 🌸</button></div>
+<div class="bar" id="bar" hidden="">
+  <div class="who" id="who"></div>
+  <input id="inp" placeholder="اكتب الاسم هنا" autocomplete="off">
+  <button class="p" id="addc">+ ابن/ابنة</button>
+  <button id="sp">زوج/زوجة</button>
+  <button id="ren">تعديل الاسم</button>
+  <button class="d" id="del">حذف</button>
+  <button id="dead">متوفى 🕊</button>
+  <button id="sdead">الزوج/ة متوفى</button>
+  <div class="pal">لون الفرع: <span id="pal"></span></div>
+  <button class="p" id="pub">💾 حفظ للجميع</button><button id="dl">⬇ تنزيل الملف</button><button id="copy">نسخ البيانات</button><button id="reset">الشجرة الأصلية</button>
+</div>
+<div class="view" id="view"><div class="fx"><span class="cl"></span><span class="cl"></span><span class="cl"></span><span class="cl"></span><span class="cl"></span><span class="cl"></span><span class="bd"></span><span class="bd"></span><span class="bd"></span><span class="bd"></span><span class="bd"></span></div><div id="stage"></div></div>
+<div class="dock"><button id="zo">－</button><button id="fit">⤢</button><button id="zi">＋</button><button id="edt">✎</button></div>
+<div class="hint">✨ قرّبي بإصبعين لتظهر الأحفاد 💕</div></template>
+<script id="s">var bt=document.getElementById("bt");document.body.appendChild(bt.content.cloneNode(true));
+
+var SAVED=/*S*/{"p":{"n":"أربد","s":"آمنة","c":[{"n":"خضرة","k":"#0e8a8a","c":[]},{"n":"زينب","k":"#2f7d5b","c":[{"n":"رضوان","c":[{"n":"خالد"},{"n":"مريم"}]},{"n":"إيان","s":"فيصل","c":[{"n":"آمنة سارة"}]},{"n":"سعيد"},{"n":"شكري"},{"n":"مصطفى"},{"n":"نصرة"},{"n":"نور"},{"n":"أحمد"},{"n":"محمد"},{"n":"خضرة"}],"s":"طاهر"},{"n":"عبدالرحمن","k":"#2b6cb0","c":[{"n":"نعيمة"},{"n":"سعاد"},{"n":"جمال"},{"n":"نصرة","s":"عبدالعزيز","c":[{"n":"مريم","c":[]}]},{"n":"سعد"},{"n":"مبارك"}],"s":"نورة"},{"n":"صدو","k":"#8e44ad","c":[{"n":"سلمى"},{"n":"عبدالله"},{"n":"زهور"},{"n":"عدنان"},{"n":"شين"},{"n":"مريم"}]},{"n":"طيقة","k":"#c9a227","c":[{"n":"أغباد","c":[{"n":"٤ أطفال"}]}]},{"n":"لضن","k":"#d6336c","c":[{"n":"ياسر"},{"n":"يوسف"}]},{"n":"محمد","k":"#c0562b","c":[{"n":"منى (زوجته السابقة)","k":"#7c8b2e","c":[{"n":"صالح","s":"رحمة"},{"n":"سلمى"}]},{"n":"زينب (زوجته الحالية)","k":"#c0562b","c":[{"n":"ليبان"},{"n":"مروة"},{"n":"عبدالعزيز"},{"n":"يسرا"}]}]}],"x":true,"sx":true},"m":{"n":"شيخ أحمد","s":"زهرة","c":[{"n":"خضر","k":"#2f7d5b","c":[{"n":"ليبان","s":"مرسيها"},{"n":"حمزة"},{"n":"خيري"},{"n":"حنان (حليمة سابقاً)"}]},{"n":"فضل","x":true,"k":"#2b6cb0","c":[{"n":"سميرة"},{"n":"رحمة"},{"n":"مريم","c":[{"n":"محمد يس"},{"n":"هب لك"},{"n":"هيبي؟"},{"n":"هني"},{"n":"هبون"},{"n":"بدر","c":[]}]}],"s":"زينيب","sx":true},{"n":"عبدالصمد","x":true,"k":"#8e44ad","c":[]},{"n":"إيد","k":"#c9a227","c":[{"n":"طيقة"},{"n":"نمعو"},{"n":"قدون"},{"n":"جبريل"},{"n":"هيبو","c":[]}]},{"n":"علي نور","x":true,"k":"#d6336c","c":[]},{"n":"مهد","k":"#c0562b","c":[]},{"n":"حسن","k":"#0e8a8a","c":[{"n":"زينب","c":[{"n":"منى"},{"n":"إبراهيم"},{"n":"عبدالقادر"},{"n":"عبدالرحمن"},{"n":"شكري"},{"n":"إيان"},{"n":"عمر؟"}],"x":true},{"n":"أمرن","k":"#d98324","c":[{"n":"عبدالفتاح"},{"n":"نعيم؟"},{"n":"نعيمة"},{"n":"محمد أمين"},{"n":"نصرة"},{"n":"أحمد؟"},{"n":"نعمر؟"},{"n":"هوشتر بروا؟"}]}]},{"n":"نورة","s":"عبدالرحمن","k":"#ff5c8a","c":[{"n":"نعيمة","c":[]},{"n":"سعاد","c":[]},{"n":"جمال","c":[]},{"n":"نصرة","c":[{"n":"مريم","c":[]}],"s":"عبدالعزيز"},{"n":"سعد","c":[]},{"n":"مبارك","c":[]}]},{"n":"حسين","k":"#7c8b2e","c":[{"n":"سميرة"},{"n":"محمد"},{"n":"نوح"},{"n":"أحمد"},{"n":"خضر"},{"n":"عبدالرحمن"},{"n":"سوقطرا"}]},{"n":"شعيب","k":"#6b5bd6","c":[{"n":"أيوب"},{"n":"رضوان"},{"n":"نورة"},{"n":"حواء (متبناة)"}]}],"x":true}}/*E*/;var SV=/*V*/1794479261046/*W*/;var KEY="family-tree-v7";
+var seedP={n:"أربد؟",s:"آمنة",c:[
+{n:"خضرة",k:"#0e8a8a",c:[]},
+{n:"زينب",k:"#2f7d5b",c:[{n:"رضوان",c:[{n:"خالد"},{n:"مريم"}]},{n:"إيان",s:"فيصل",c:[{n:"آمنة سارة"}]},{n:"سعيد"},{n:"شكري"},{n:"مصطفى"},{n:"نصرة"},{n:"نور"},{n:"أحمد"},{n:"محمد"},{n:"خضرة"},{n:"لضن؟"}]},
+{n:"عبدالرحمن",k:"#2b6cb0",c:[{n:"نعيمة"},{n:"سعاد"},{n:"جمال"},{n:"نصرة",s:"عبدالعزيز"},{n:"سعد"},{n:"مبارك"}]},
+{n:"عمرو",k:"#8e44ad",c:[{n:"سلمى"},{n:"عبدالله"},{n:"زهور"},{n:"عدنان"},{n:"شيني؟"},{n:"مريم"}]},
+{n:"صفية؟",k:"#c9a227",c:[{n:"اعتماد",c:[{n:"٤ أطفال"}]}]},
+{n:"لضن؟",k:"#d6336c",c:[{n:"ياسر"},{n:"يوسف"}]},
+{n:"محمد",k:"#c0562b",c:[{n:"منى (زوجته السابقة)",k:"#7c8b2e",c:[{n:"صالح",s:"رحمة"},{n:"سلمى"}]},{n:"زينب (زوجته الحالية)",k:"#c0562b",c:[{n:"ليبان"},{n:"مروة"},{n:"عبدالعزيز"},{n:"يسرا"}]}]}
+]};
+var seedM={n:"شيخ أحمد",s:"زهرة",c:[
+{n:"فضر؟",k:"#2f7d5b",c:[{n:"ليبان"},{n:"حمزة"},{n:"خيرة؟"},{n:"حنان؟"}]},
+{n:"فضل",x:true,k:"#2b6cb0",c:[{n:"سعيدة؟"},{n:"رحمة"},{n:"مريم",c:[{n:"محمدين؟"},{n:"هبة الله؟"},{n:"هيبي؟"},{n:"هني؟"},{n:"هبون بدر؟"}]}]},
+{n:"عبدالصمد",x:true,k:"#8e44ad",c:[]},
+{n:"عايد",k:"#c9a227",c:[{n:"لطيفة؟"},{n:"هيبو؟"},{n:"نمهو؟"},{n:"قدون؟"},{n:"ميريل؟"}]},
+{n:"علي نور",x:true,k:"#d6336c",c:[]},
+{n:"محمد",k:"#c0562b",c:[]},
+{n:"حسن",k:"#0e8a8a",c:[{n:"زينب",c:[{n:"منى"},{n:"إبراهيم"},{n:"عبدالقادر"},{n:"عبدالرحمن"},{n:"شكري"},{n:"إيان"},{n:"عمر؟"}]},{n:"أمين؟",k:"#d98324",c:[{n:"عبدالفتاح"},{n:"نعيم؟"},{n:"نعيمة"},{n:"محمد أمين"},{n:"نصرة"},{n:"أحمد؟"},{n:"نعمر؟"},{n:"هوشتر بروا؟"}]}]},
+{n:"نورة",s:"عبدالرحمن",k:"#ff5c8a",c:[]},
+{n:"حسين",k:"#7c8b2e",c:[{n:"سميدة؟"},{n:"محمد"},{n:"نوح"},{n:"أحمد"},{n:"خضر؟"},{n:"عبدالرحمن"},{n:"سوقطرا؟"}]},
+{n:"شعيب",k:"#6b5bd6",c:[{n:"أيوب"},{n:"رضوان"},{n:"نورة"},{n:"هود؟"}]}
+]};
+var seed=SAVED||{p:seedP,m:seedM};
+function load(){try{var t=localStorage.getItem(KEY);if(t){var o=JSON.parse(t);if(o&&o.sv===SV&&o.d&&o.d.p&&o.d.m)return o.d}if(SV===1){var t6=localStorage.getItem("family-tree-v6");if(t6){var q=JSON.parse(t6);if(q&&q.p&&q.m)return q}}}catch(e){}return JSON.parse(JSON.stringify(seed))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({sv:SV,d:D}))}catch(e){}}
+var PREV=null,smT=0,raf=0,anchors=new Map(),D=load(),cur="p",root=D.p,sel=root,LV=1,SP=true,T={x:0,y:0,s:.5},cards=new Map(),edges=[];
+var view=document.getElementById("view"),stage=document.getElementById("stage");
+function parentOf(t,n){if(!t.c)return null;for(var i=0;i<t.c.length;i++){if(t.c[i]===n)return t;var r=parentOf(t.c[i],n);if(r)return r}return null}
+function pos(el){var x=0,y=0;while(el&&el!==stage){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}return{x:x,y:y}}
+var FACE=["..HHHH..",".HHHHHH.",".HSSSSH.",".SKSSKS.",".SSSSSS.","..SSSS..",".BBBBBB.","BBBBBBBB"];
+var HEART=[".XX.XX.","XXXXXXX","XWXXXXX",".XXXXX.","..XXX..","...X..."];
+function hs(t){var h=0;for(var i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>>0;return h}
+function facePal(n,col){var h=hs(n.n);return{H:["#2b1d14","#4a2c17","#1a1a1a","#7a4a21","#a6a6a6"][(h>>2)%5],S:["#f1c9a5","#d9a577","#b57a4f","#8a5634"][h%4],K:"#2b1d14",B:col||["#4aa3df","#e1664f","#6ab04c","#b07cd8"][(h>>4)%4]}}
+function pix(rows,pal,z){var ns="http://www.w3.org/2000/svg",s=document.createElementNS(ns,"svg");s.setAttribute("viewBox","0 0 "+rows[0].length+" "+rows.length);s.setAttribute("width",rows[0].length*z);s.setAttribute("height",rows.length*z);s.setAttribute("shape-rendering","crispEdges");rows.forEach(function(r,y){for(var x=0;x<r.length;x++){var c=pal[r[x]];if(c){var e=document.createElementNS(ns,"rect");e.setAttribute("x",x);e.setAttribute("y",y);e.setAttribute("width",1);e.setAttribute("height",1);e.setAttribute("fill",c);s.appendChild(e)}}});return s}
+function canopy(W,Hh,rc){var cv=document.createElement("canvas");cv.width=W;cv.height=Hh;var g=cv.getContext("2d"),sd=7,rnd=function(){sd=(sd*16807)%2147483647;return sd/2147483647},cov=new Uint8Array(W*Hh),bl=[];
+rc.forEach(function(r){var m=7;for(var gy=r[1]-m;gy<r[1]+r[3]+m;gy+=4.5)for(var gx=r[0]-m;gx<r[0]+r[2]+m;gx+=4.5){var ex=Math.max(r[0]-gx,0,gx-r[0]-r[2]),ey=Math.max(r[1]-gy,0,gy-r[1]-r[3]);if(Math.sqrt(ex*ex+ey*ey)>m*(.55+rnd()*.45))continue;bl.push([gx+(rnd()-.5)*3,gy+(rnd()-.5)*3,4.5+rnd()*3.2])}});
+bl.sort(function(a,b){return a[1]-b[1]});
+bl.forEach(function(b){var r=b[2];for(var y=Math.max(0,Math.floor(b[1]-r));y<Math.min(Hh,b[1]+r);y++)for(var x=Math.max(0,Math.floor(b[0]-r));x<Math.min(W,b[0]+r);x++){var lx=(x-b[0])/r,ly=(y-b[1])/r;if(lx*lx+ly*ly<1){var t=-(lx*.6+ly*.8);cov[y*W+x]=t>.4?4:t>0?3:t>-.5?2:1}}});
+var cl=["","#256b2c","#348a38","#4fae4a","#7cca5e"],ol="#17491f";
+for(var y=0;y<Hh;y++)for(var x=0;x<W;x++){var v=cov[y*W+x];if(!v)continue;var e=x<1||y<1||x>=W-1||y>=Hh-1||!cov[y*W+x-1]||!cov[y*W+x+1]||!cov[(y-1)*W+x]||!cov[(y+1)*W+x];g.fillStyle=e?ol:cl[v];g.fillRect(x,y,1,1)}
+return cv.toDataURL()}
+function li(n,inh,d){
+  var col=n.k||inh,l=document.createElement("li"),c=document.createElement("div");
+  c.className="card"+(d===0?" root":"")+(n===sel?" sel":"")+(n.x?" dead":"");
+  if(col){c.setAttribute("data-c","1");c.style.setProperty("--c",col)}
+  c._n=n;cards.set(n,c);c.style.animationDelay=(d*.15)+"s";if(PREV&&!PREV.has(n))c.classList.add("nw");
+  var b=document.createElement("b");b.textContent=n.n+(n.x?" 🕊":"");c.appendChild(b);
+  
+  var has=n.c&&n.c.length;
+  if(has&&d>=LV){var m=document.createElement("span");m.className="more";m.textContent="+"+n.c.length;c.appendChild(m)}
+  var hrE=null,anc=c;
+  if(SP&&n.s){var cp=document.createElement("div");cp.className="cp";var sc=document.createElement("div");sc.className="card spc"+(n===sel?" sel":"")+(n.sx?" dead":"");sc._n=n;var sb=document.createElement("b");sb.textContent=n.s+(n.sx?" 🕊":"");sc.appendChild(sb);hrE=document.createElement("div");hrE.className="hr";var h=document.createElement("i");h.className="heart";h.appendChild(pix(HEART,{X:"#e03a3a",W:"#ff9aa2"},3));hrE.appendChild(h);cp.appendChild(sc);cp.appendChild(hrE);cp.appendChild(c);l.appendChild(cp);anc=cp}else l.appendChild(c);
+  anchors.set(n,{c:anc,h:hrE});
+  if(has&&d<LV){var u=document.createElement("ul");
+    n.c.slice().reverse().forEach(function(k){u.appendChild(li(k,col,d+1));edges.push([n,k,d,k.k||col])});
+    l.appendChild(u)}
+  return l;
+}
+function render(a){
+  stage.className=a===true?"anim":a?"lvnew":"";stage.innerHTML="";cards=new Map();anchors=new Map();edges=[];
+  var u=document.createElement("ul");u.appendChild(li(root,null,0));stage.appendChild(u);
+  var SW=stage.scrollWidth,SH=stage.scrollHeight,CW=Math.min(520,Math.ceil(SW*1.12/8)),CH=Math.min(360,Math.ceil(SH*1.16/8)),sx=CW/(SW*1.12),sy=CH/(SH*1.16),rc=[];anchors.forEach(function(A){var q=pos(A.c);rc.push([(q.x+.06*SW)*sx,(q.y+.06*SH)*sy,A.c.offsetWidth*sx,A.c.offsetHeight*sy])});var cn=document.createElement("div");cn.className="cn";cn.style.backgroundImage="url("+canopy(CW,CH,rc)+")";var tk=document.createElement("div");tk.className="tk";
+  var ns="http://www.w3.org/2000/svg",s=document.createElementNS(ns,"svg");
+  s.style.cssText="position:absolute;left:0;top:0;pointer-events:none;overflow:visible";
+  s.setAttribute("width",stage.scrollWidth);s.setAttribute("height",stage.scrollHeight);
+  edges.forEach(function(e){
+    var A=anchors.get(e[0]),a=A.c,b=cards.get(e[1]),pa=pos(a),pb=pos(b),x1=A.h?pos(A.h).x+A.h.offsetWidth/2:pa.x+a.offsetWidth/2,y1=pa.y+a.offsetHeight,x2=pb.x+b.offsetWidth/2,y2=pb.y,m=(y1+y2)/2,p=document.createElementNS(ns,"path");
+    p.setAttribute("d","M"+x1+","+y1+"C"+x1+","+m+" "+x2+","+m+" "+x2+","+y2);p.setAttribute("stroke-linecap","round");
+    p._d=e[2];p._nw=PREV?!PREV.has(e[1]):1;p.setAttribute("fill","none");p.setAttribute("stroke-linejoin","round");
+    var w=Math.max(4,10-e[2]*2);p.setAttribute("stroke-width",w);p.style.stroke="#7a4b2a";s.appendChild(p);var q=p.cloneNode();q._d=p._d;q._nw=p._nw;q.setAttribute("stroke-width",Math.max(2,w/3));q.style.stroke="#b8804a";s.appendChild(q)});
+  stage.insertBefore(s,stage.firstChild);stage.insertBefore(cn,stage.firstChild);stage.appendChild(tk);
+  if(a)s.querySelectorAll("path").forEach(function(p){if(a!==true&&!p._nw)return;var L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.style.animation="grow .8s ease "+(p._d*.25)+"s forwards"});
+  PREV=null;document.getElementById("who").textContent="المحدد: "+sel.n+(sel.s?" و"+sel.s:"");
+  document.getElementById("chip").textContent=sel.n+(sel.s?" ♥ "+sel.s:"")+(sel.c&&sel.c.length?" · "+sel.c.length+" أبناء":"");
+}
+function tf(){stage.style.transform="translate("+T.x+"px,"+T.y+"px) scale("+T.s+")"}
+function sched(){if(!raf)raf=requestAnimationFrame(function(){raf=0;tf()})}
+function sm(){stage.style.transition="transform .25s ease-out";clearTimeout(smT);smT=setTimeout(function(){stage.style.transition=""},280)}
+function lvFor(s){if(LV===1)return s>=1.25?99:s>=.8?2:1;if(LV===2)return s<.7?1:s>=1.25?99:2;return s<.7?1:s<1.15?2:99}
+function apply(){
+  var l=lvFor(T.s),sp=true;
+  if(l!==LV||sp!==SP){
+    var vr=view.getBoundingClientRect(),cx=vr.width/2,cy=vr.height/2,best=null,bd=1e12,bx=0,by=0;
+    cards.forEach(function(el,n){var p=pos(el),sx=T.x+(p.x+el.offsetWidth/2)*T.s,sy=T.y+(p.y+el.offsetHeight/2)*T.s,d=(sx-cx)*(sx-cx)+(sy-cy)*(sy-cy);if(d<bd){bd=d;best=n;bx=sx;by=sy}});
+    PREV=cards;LV=l;SP=sp;render("lv");
+    var el=cards.get(best);while(!el&&best){best=parentOf(root,best);el=best&&cards.get(best)}
+    if(el){var p=pos(el);T.x=bx-(p.x+el.offsetWidth/2)*T.s;T.y=by-(p.y+el.offsetHeight/2)*T.s}
+  }
+  sched();
+}
+function zoomAt(cx,cy,k){var ns=Math.max(.2,Math.min(3,T.s*k));k=ns/T.s;T.x=cx-(cx-T.x)*k;T.y=cy-(cy-T.y)*k;T.s=ns;apply()}
+function fit(){LV=1;SP=true;render(true);var w=stage.offsetWidth;T.s=Math.max(.2,Math.min(.74,(view.clientWidth-8)/w));T.x=(view.clientWidth-w*T.s)/2;T.y=6;tf()}
+var P={},moved=0,multi=0,last=null;
+view.addEventListener("pointerdown",function(e){stage.style.transition="";try{view.setPointerCapture(e.pointerId)}catch(x){}P[e.pointerId]={x:e.clientX,y:e.clientY};var k=Object.keys(P).length;if(k>1)multi=1;if(k===1)moved=0;last=null});
+view.addEventListener("pointermove",function(e){
+  var p=P[e.pointerId];if(!p)return;var ks=Object.keys(P),r=view.getBoundingClientRect();
+  if(ks.length===1){var dx=e.clientX-p.x,dy=e.clientY-p.y;moved+=Math.abs(dx)+Math.abs(dy);T.x+=dx;T.y+=dy;p.x=e.clientX;p.y=e.clientY;sched()}
+  else{p.x=e.clientX;p.y=e.clientY;var a=P[ks[0]],b=P[ks[1]],d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2-r.left,my=(a.y+b.y)/2-r.top;moved=99;
+    if(last){T.x+=mx-last.mx;T.y+=my-last.my;zoomAt(mx,my,d/last.d)}last={d:d,mx:mx,my:my}}
+});
+function up(e){var had=P[e.pointerId];delete P[e.pointerId];
+  if(!Object.keys(P).length){
+    if(had&&e.type==="pointerup"&&!multi&&moved<8){var el=document.elementFromPoint(e.clientX,e.clientY),c=el&&el.closest&&el.closest(".card");if(c&&c._n){sel=c._n;render()}}
+    multi=0;last=null}}
+view.addEventListener("pointerup",up);view.addEventListener("pointercancel",up);
+view.addEventListener("wheel",function(e){e.preventDefault();var r=view.getBoundingClientRect();if(Math.abs(e.deltaY)>=50)sm();zoomAt(e.clientX-r.left,e.clientY-r.top,Math.exp(-Math.max(-120,Math.min(120,e.deltaY))*.0018))},{passive:false});
+function ctr(k){sm();zoomAt(view.clientWidth/2,view.clientHeight/2,k)}
+document.getElementById("zi").onclick=function(){ctr(1.3)};
+document.getElementById("zo").onclick=function(){ctr(1/1.3)};
+document.getElementById("fit").onclick=fit;
+document.getElementById("edt").onclick=function(){var b=document.getElementById("bar");b.hidden=!b.hidden};
+function val(){var i=document.getElementById("inp"),v=i.value.trim();i.value="";return v}
+function ch(){save();render()}
+document.getElementById("addc").onclick=function(){var v=val();if(!v)return;(sel.c=sel.c||[]).push({n:v,c:[]});if(LV<99){}ch()};
+document.getElementById("sp").onclick=function(){var v=val();if(!v)return;sel.s=v;ch()};
+document.getElementById("ren").onclick=function(){var v=val();if(!v)return;sel.n=v;ch()};
+var dT=0,dTg=null;
+function toast(m){document.getElementById("chip").textContent=m}
+document.getElementById("del").onclick=function(){
+  var b=this;
+  if(sel===root){toast("ما يمكن حذف الجذر");return}
+  if(!dT||dTg!==sel){clearTimeout(dT);dTg=sel;b.textContent="تأكيد الحذف؟ اضغطي مرة ثانية";dT=setTimeout(function(){dT=0;b.textContent="حذف"},3500);return}
+  clearTimeout(dT);dT=0;b.textContent="حذف";
+  var p=parentOf(root,sel);p.c=p.c.filter(function(k){return k!==sel});sel=p;ch()};
+document.getElementById("dead").onclick=function(){sel.x=!sel.x;ch()};
+document.getElementById("sdead").onclick=function(){if(!sel.s){toast("ما فيه زوج/زوجة مسجل");return}sel.sx=!sel.sx;ch()};
+document.getElementById("copy").onclick=function(){var t=JSON.stringify(D),i=document.getElementById("inp");function fb(){i.value=t;i.focus();i.select();toast("انسخي النص من الخانة اللي تحت")}try{navigator.clipboard.writeText(t).then(function(){toast("تم النسخ ✓")},fb)}catch(e){fb()}};
+var rT=0;
+document.getElementById("reset").onclick=function(){var b=this;if(!rT){b.textContent="تأكيد؟ اضغطي مرة ثانية";rT=setTimeout(function(){rT=0;b.textContent="الشجرة الأصلية"},3500);return}clearTimeout(rT);rT=0;b.textContent="الشجرة الأصلية";D=JSON.parse(JSON.stringify(seed));root=D[cur];sel=root;save();fit()};
+(function(){var p=document.getElementById("pal");
+  ["#2f7d5b","#c0562b","#2b6cb0","#8e44ad","#c9a227","#d6336c","#d62828"].forEach(function(c){var i=document.createElement("i");i.style.background=c;i.onclick=function(){sel.k=c;ch()};p.appendChild(i)});
+  var x=document.createElement("button");x.textContent="بدون لون";x.onclick=function(){delete sel.k;ch()};p.appendChild(x)})();
+var W0=innerWidth;window.addEventListener("resize",function(){if(innerWidth!==W0){W0=innerWidth;fit()}});
+var HEAD="<!DOCTYPE html>\n<html lang=\"ar\" dir=\"rtl\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n<title>شجرة العائلة</title>\n<link href=\"https://fonts.googleapis.com/css2?family=Handjet:wght@400;700&display=swap\" rel=\"stylesheet\">\n<style id=\"st\">";
+function buildHtml(){
+  var s=document.getElementById("s").textContent,js=JSON.stringify(D).replace(/</g,"\\u003c"),nv=Date.now();
+  s=s.replace(new RegExp("/\\*S\\*/[\\s\\S]*?/\\*E\\*/"),function(){return "/*"+"S*/"+js+"/*"+"E*/"});
+  s=s.replace(new RegExp("/\\*V\\*/[\\s\\S]*?/\\*W\\*/"),function(){return "/*"+"V*/"+nv+"/*"+"W*/"});
+  return HEAD+document.getElementById("st").textContent+"</style>\n</head>\n<body>\n<template id=\"bt\">"+document.getElementById("bt").innerHTML+"</template>\n<script id=\"s\">"+s+"<\/script>\n</body>\n</html>"}
+function pubAll(){
+  if(typeof claude==="undefined"||!claude.use){toast("الحفظ للجميع يشتغل من رابط كلود فقط");return}
+  toast("جاري الحفظ...");
+  claude.use("artifact").then(function(a){
+    if(!a){toast("الحفظ غير متاح هنا");return}
+    return a.publish(buildHtml()).then(function(){toast("تم الحفظ ✓")},function(e){toast(e&&(e.code==="not_writer"||e.code==="not_granted")?"الحفظ للمالك فقط":"ما انحفظ، جربي مرة ثانية")})
+  })
+}
+function dlFile(){
+  if(typeof claude==="undefined"||!claude.use){toast("التنزيل يشتغل من رابط كلود فقط");return}
+  claude.use("downloads").then(function(d){
+    if(!d){toast("التنزيل غير متاح هنا");return}
+    return d.save({filename:"family-tree.html",data:buildHtml()}).then(function(){toast("تم ✓")},function(){toast("ما تم التنزيل")})
+  })
+}
+document.getElementById("pub").onclick=pubAll;
+document.getElementById("dl").onclick=dlFile;
+function tab(k){cur=k;root=D[k];sel=root;document.getElementById("tp").className=k==="p"?"on":"";document.getElementById("tm").className=k==="m"?"on":"";fit()}
+document.getElementById("tp").onclick=function(){tab("p")};
+document.getElementById("tm").onclick=function(){tab("m")};
+fit();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+</script>
+</body>
+</html>
